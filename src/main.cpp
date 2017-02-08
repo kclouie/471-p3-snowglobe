@@ -26,7 +26,7 @@ GLFWwindow *window; // Main application window
 string RESOURCE_DIR = ""; // Where the resources are loaded from
 shared_ptr<Program> prog1; // Snowman program
 shared_ptr<Program> prog2; // Snow program
-shared_ptr<Shape> shape;
+shared_ptr<Shape> shape; 
 
 GLuint VertexArrayID;
 static const GLfloat g_vertex_buffer_data[] = {
@@ -40,7 +40,7 @@ static const GLfloat g_vertex_buffer_data[] = {
 .86f, 0.31f, -4.3f,
 -0.73f, 1.86f, -4.2f,
 -1.05f, 1.65f, -4.1f,
-0.37f, -1.91f, -4.0f,
+0.37f, -1.81f, -4.0f,
 -1.29f, 1.38f, -4.1f,
 1.08f, .44f, -4.2f,
 0.64f, 1.87f, -4.3f,
@@ -51,7 +51,7 @@ static const GLfloat g_vertex_buffer_data[] = {
 -1.35f, -1.65f, -4.2f,
 1.75f, 0.44f, -4.1f,
 1.1f, -1.01f, -4.0f,
--1.9f, 0.3f, -4.1f,
+-1.8f, 0.3f, -4.1f,
 1.04f, -1.6f, -4.2f,
 -1.17f, -1.64f, -4.3f,
 1.74f, -1.63f, -4.4f,
@@ -59,7 +59,7 @@ static const GLfloat g_vertex_buffer_data[] = {
 -0.16f, -1.55f, -4.4f,
 -1.54f, -1.67f, -4.3f,
 1.27f, .27f, -4.2f,
-1.93f, -0.78f, -4.1f,
+1.83f, -0.78f, -4.1f,
 1.21f, 1.05f, -4.0f,
 1.23f, 1.57f, -4.1f,
 -1.34f, 1.45f, -4.2f,
@@ -73,8 +73,9 @@ static const GLfloat g_vertex_buffer_data[] = {
 };
 
 GLuint vertexbuffer; 
-int g_width, g_height, flag;
+int g_width, g_height, flag, keyRotate;
 float sTheta, snowTheta;
+
 
 static void error_callback(int error, const char *description)
 {
@@ -83,8 +84,17 @@ static void error_callback(int error, const char *description)
 
 static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
+	/*if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+		glfwSetWindowShouldClose(window, GL_TRUE);
+	}*/
 	if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, GL_TRUE);
+	}
+	else if (key == GLFW_KEY_A && action == GLFW_PRESS) {
+		keyRotate = -.01;
+	}
+	else if (key == GLFW_KEY_D && action == GLFW_PRESS) {
+		keyRotate = .01;
 	}
 }
 
@@ -124,6 +134,7 @@ static void init()
 	sTheta = 0;
 	snowTheta = 0;
 	flag = 0;
+	key = 0;
 
 	// Set background color.
 	glClearColor(.12f, .34f, .56f, 1.0f);
@@ -158,6 +169,9 @@ static void init()
 	prog2->addUniform("W");
 	prog2->addUniform("H");
 	prog2->addUniform("T");
+
+	// Initialize the GLSL program (GLOBE).
+	
 }
 
 static void render()
@@ -190,7 +204,7 @@ static void render()
      	MV->loadIdentity();
 		//draw 'global transforms'
 	    // Center - Body
-		MV->translate(vec3(0, 0, -5));
+		MV->translate(vec3(0, 0, -5.5));
 	  	MV->scale(vec3(1, .9, 1));
 	  	colorMode = 0;
 	  	glUniformMatrix4fv(prog1->getUniform("MV"), 1, GL_FALSE, value_ptr(MV->topMatrix()));
@@ -266,27 +280,27 @@ static void render()
 	// Draw the points using GLSL.
 	prog2->bind();
 	//send the matrices to the shaders
-	MV->pushMatrix();
-	MV->rotate(snowTheta, vec3(0, 0, 1));
-	glUniformMatrix4fv(prog2->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-	glUniformMatrix4fv(prog2->getUniform("MV"), 1, GL_FALSE, value_ptr(MV->topMatrix()));
-	glUniform1i(prog2->getUniform("W"), W);
-	glUniform1i(prog2->getUniform("H"), H);
-	glUniform1f(prog2->getUniform("T"), T);
+		MV->pushMatrix();
+		MV->rotate(snowTheta, vec3(0, 0, 1));
+		glUniformMatrix4fv(prog2->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
+		glUniformMatrix4fv(prog2->getUniform("MV"), 1, GL_FALSE, value_ptr(MV->topMatrix()));
+		glUniform1i(prog2->getUniform("W"), W);
+		glUniform1i(prog2->getUniform("H"), H);
+		glUniform1f(prog2->getUniform("T"), T);
 
-	//we need to set up the vertex array
-	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	//key function to get up how many elements to pull out at a time (3)
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0);
+		//we need to set up the vertex array
+		glEnableVertexAttribArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+		//key function to get up how many elements to pull out at a time (3)
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0);
 
-	//actually draw from vertex 0, 3 vertices
-	glPointSize(25.0f);
-	glDrawArrays(GL_POINTS, 0, 40);
-	glDisableVertexAttribArray(0);
+		//actually draw from vertex 0, 3 vertices
+		glPointSize(25.0f);
+		glDrawArrays(GL_POINTS, 0, 40);
+		glDisableVertexAttribArray(0);
 
-	MV->popMatrix();
-	prog1->unbind();
+		MV->popMatrix();
+	prog2->unbind();
 
     // Pop matrix stacks.
     P->popMatrix();
