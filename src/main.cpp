@@ -73,8 +73,9 @@ static const GLfloat g_vertex_buffer_data[] = {
 };
 
 GLuint vertexbuffer; 
-int g_width, g_height, flag, keyRotate;
-float sTheta, snowTheta;
+int g_width, g_height, flag;
+double keyRotate;
+float sTheta, snowTheta, gTheta;
 
 
 static void error_callback(int error, const char *description)
@@ -95,6 +96,9 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
 	}
 	else if (key == GLFW_KEY_D && action == GLFW_PRESS) {
 		keyRotate = .01;
+	}
+	else if (action == GLFW_RELEASE) {
+		keyRotate = 0;
 	}
 }
 
@@ -134,7 +138,8 @@ static void init()
 	sTheta = 0;
 	snowTheta = 0;
 	flag = 0;
-	key = 0;
+	keyRotate = 0;
+	gTheta = 0;
 
 	// Set background color.
 	glClearColor(.12f, .34f, .56f, 1.0f);
@@ -205,6 +210,7 @@ static void render()
 		//draw 'global transforms'
 	    // Center - Body
 		MV->translate(vec3(0, 0, -5.5));
+		MV->rotate(gTheta, vec3(0, 1, 0));
 	  	MV->scale(vec3(1, .9, 1));
 	  	colorMode = 0;
 	  	glUniformMatrix4fv(prog1->getUniform("MV"), 1, GL_FALSE, value_ptr(MV->topMatrix()));
@@ -213,7 +219,7 @@ static void render()
 
 	  	// Left Arm
 	  	MV->pushMatrix();
-	  		MV->translate(vec3(-.9, 0, 2));
+	  		MV->translate(vec3(-.9, 0, .8));
 	  		MV->scale(vec3(.4, .03, .02));
 	  		colorMode = 1; 
 	  		glUniformMatrix4fv(prog1->getUniform("MV"), 1, GL_FALSE, value_ptr(MV->topMatrix()));
@@ -223,7 +229,7 @@ static void render()
 
 	  	// Right Arm
 	  	MV->pushMatrix();
-	  		MV->translate(vec3(1, .2, 1));
+	  		MV->translate(vec3(.8, .2, .8));
 	  		MV->rotate(sTheta, vec3(0, 0, 1));
 	  		MV->translate(vec3(.2, 0, 0));
 	  		MV->scale(vec3(.6, .03, .02));
@@ -254,7 +260,7 @@ static void render()
 
 		  	// Left Eye
 		  	MV->pushMatrix();
-		  		MV->translate(vec3(-.3, .05, 1));
+		  		MV->translate(vec3(-.3, .05, .8));
 		  		MV->scale(vec3(.09, .15, .1));
 		  		colorMode = 1;
 		  		glUniformMatrix4fv(prog1->getUniform("MV"), 1, GL_FALSE, value_ptr(MV->topMatrix()));
@@ -264,7 +270,7 @@ static void render()
 
 		  	// Right Eye
 		  	MV->pushMatrix();
-		  		MV->translate(vec3(.3, .05, 1));
+		  		MV->translate(vec3(.3, .05, .8));
 		  		MV->scale(vec3(.09, .15, .1));
 		  		colorMode = 1;
 		  		glUniformMatrix4fv(prog1->getUniform("MV"), 1, GL_FALSE, value_ptr(MV->topMatrix()));
@@ -319,7 +325,11 @@ static void render()
 		flag = 1;
 	}
 
+	// Update snow rotation angles
 	snowTheta += .002;
+
+	// Update global y-rotation angle
+	gTheta += keyRotate;
 }
 
 int main(int argc, char **argv)
@@ -343,7 +353,7 @@ int main(int argc, char **argv)
    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
 
 	// Create a windowed mode window and its OpenGL context.
-	window = glfwCreateWindow(640, 480, "Lab 6", NULL, NULL);
+	window = glfwCreateWindow(640, 480, "Chunk's Debut", NULL, NULL);
 	if(!window) {
 		glfwTerminate();
 		return -1;
