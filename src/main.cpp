@@ -1,4 +1,4 @@
-/* Lab 6 base code - transforms using matrix stack built on glm 
+/* Project 2B- transforms using matrix stack built on glm 
 	CPE 471 Cal Poly Z. Wood + S. Sueda
 */
 #include <iostream>
@@ -114,9 +114,9 @@ static void render()
 
 	/* draw bottom cube */	
    MV->pushMatrix();
-     MV->loadIdentity();
-	  //draw the bottom cube with these 'global transforms'
-      // Center - Body
+     	MV->loadIdentity();
+		//draw the bottom cube with these 'global transforms'
+	    // Center - Body
 		MV->translate(vec3(0, 0, -5));
 	  	MV->scale(vec3(1, .9, 1));
 	  	glUniformMatrix4fv(prog->getUniform("MV"), 1, GL_FALSE, value_ptr(MV->topMatrix()));
@@ -132,21 +132,13 @@ static void render()
 
 	  	// Right Arm
 	  	MV->pushMatrix();
-	  		/*MV->translate(vec3(1, 0, 0));
-	  		MV->rotate(sTheta, vec3(0, 0, 1));
-	  		MV->translate(vec3(1, 0, 1));
-	  		MV->scale(vec3(.4, .03, .02));*/
 	  		MV->translate(vec3(1, .2, 1));
-			//rotate shoulder joint
-		    MV->rotate(sTheta, vec3(0, 0, 1));
-			//move to shoulder joint
-			MV->translate(vec3(.2, 0, 0));
-			//non-uniform scale
-		  	MV->scale(vec3(.6, 0.03, 0.02));
+	  		MV->rotate(sTheta, vec3(0, 0, 1));
+	  		MV->translate(vec3(.2, 0, 0));
+	  		MV->scale(vec3(.6, .03, .02));
 	  		glUniformMatrix4fv(prog->getUniform("MV"), 1, GL_FALSE, value_ptr(MV->topMatrix()));
 	  		shape->draw(prog);
 		MV->popMatrix();
-
 
 	  	// Bottom - Body
 	  	MV->pushMatrix();
