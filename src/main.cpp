@@ -31,45 +31,45 @@ shared_ptr<Shape> shape;
 GLuint VertexArrayID;
 static const GLfloat g_vertex_buffer_data[] = {
 -1.94f, 0.36f, -4.0f,
-1.1f, 1.65f, -4.0f,
--1.4f, -1.21f, -4.0f,
-0.08f, -1.56f, -4.0f,
--1.09f, -1.26f, -4.0f,
--1.18f, .39f, -4.0f,
-1.31f, 1.29f, -4.0f,
-.86f, 0.31f, -4.0f,
--0.73f, 1.86f, -4.0f,
--1.05f, 1.65f, -4.0f,
+1.1f, 1.65f, -4.1f,
+-1.4f, -1.21f, -4.2f,
+0.08f, -1.56f, -4.3f,
+-1.09f, -1.26f, -4.4f,
+-1.18f, .39f, -4.5f,
+1.31f, 1.29f, -4.4f,
+.86f, 0.31f, -4.3f,
+-0.73f, 1.86f, -4.2f,
+-1.05f, 1.65f, -4.1f,
 0.37f, -1.91f, -4.0f,
--1.29f, 1.38f, -4.0f,
-1.08f, .44f, -4.0f,
-0.64f, 1.87f, -4.0f,
--1.23f, -.35f, -4.0f,
-1.45f, 1.46f, -4.0f,
--.62f, .91f, -4.0f,
--1.18f, 1.84f, -4.0f,
--1.35f, -1.65f, -4.0f,
-1.75f, 0.44f, -4.0f,
+-1.29f, 1.38f, -4.1f,
+1.08f, .44f, -4.2f,
+0.64f, 1.87f, -4.3f,
+-1.23f, -.35f, -4.4f,
+1.45f, 1.46f, -4.5f,
+-.62f, .91f, -4.4f,
+-1.18f, 1.84f, -4.3f,
+-1.35f, -1.65f, -4.2f,
+1.75f, 0.44f, -4.1f,
 1.1f, -1.01f, -4.0f,
--1.9f, 0.3f, -4.0f,
-1.04f, -1.6f, -4.0f,
--1.17f, -1.64f, -4.0f,
-1.74f, -1.63f, -4.0f,
-1.01f, -1.06f, -4.0f,
--0.16f, -1.55f, -4.0f,
--1.54f, -1.67f, -4.0f,
-1.27f, .27f, -4.0f,
-1.93f, -0.78f, -4.0f,
+-1.9f, 0.3f, -4.1f,
+1.04f, -1.6f, -4.2f,
+-1.17f, -1.64f, -4.3f,
+1.74f, -1.63f, -4.4f,
+1.01f, -1.06f, -4.5f,
+-0.16f, -1.55f, -4.4f,
+-1.54f, -1.67f, -4.3f,
+1.27f, .27f, -4.2f,
+1.93f, -0.78f, -4.1f,
 1.21f, 1.05f, -4.0f,
-1.23f, 1.57f, -4.0f,
--1.34f, 1.45f, -4.0f,
--1.25f, -0.44f, -4.0f,
-1.75f, 1.11f, -4.0f,
-1.63f, 1.49f, -4.0f,
--1.57f, 1.69f, -4.0f,
--1.29f, 1.8f, -4.0f,
-1.89f, .9f, -4.0f,
-1.16f, -1.38f, -4.0f,
+1.23f, 1.57f, -4.1f,
+-1.34f, 1.45f, -4.2f,
+-1.25f, -0.44f, -4.3f,
+1.75f, 1.11f, -4.4f,
+1.63f, 1.49f, -4.5f,
+-1.57f, 1.69f, -4.4f,
+-1.29f, 1.8f, -4.3f,
+1.89f, .9f, -4.2f,
+1.16f, -1.38f, -4.1f,
 };
 
 GLuint vertexbuffer; 
@@ -240,8 +240,8 @@ static void render()
 
 		  	// Left Eye
 		  	MV->pushMatrix();
-		  		MV->translate(vec3(-.4, .05, 1));
-		  		MV->scale(vec3(.1, .1, .1));
+		  		MV->translate(vec3(-.3, .05, 1));
+		  		MV->scale(vec3(.09, .15, .1));
 		  		colorMode = 1;
 		  		glUniformMatrix4fv(prog1->getUniform("MV"), 1, GL_FALSE, value_ptr(MV->topMatrix()));
 		  		glUniform1f(prog1->getUniform("colorMode"), colorMode);
@@ -250,8 +250,8 @@ static void render()
 
 		  	// Right Eye
 		  	MV->pushMatrix();
-		  		MV->translate(vec3(.4, .05, 1));
-		  		MV->scale(vec3(.1, .1, .1));
+		  		MV->translate(vec3(.3, .05, 1));
+		  		MV->scale(vec3(.09, .15, .1));
 		  		colorMode = 1;
 		  		glUniformMatrix4fv(prog1->getUniform("MV"), 1, GL_FALSE, value_ptr(MV->topMatrix()));
 		  		glUniform1f(prog1->getUniform("colorMode"), colorMode);
