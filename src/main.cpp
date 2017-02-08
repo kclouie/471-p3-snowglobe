@@ -132,8 +132,17 @@ static void render()
 
 	  	// Right Arm
 	  	MV->pushMatrix();
-	  		MV->translate(vec3(.9, 0, 2));
-	  		MV->scale(vec3(.4, .03, .02));
+	  		/*MV->translate(vec3(1, 0, 0));
+	  		MV->rotate(sTheta, vec3(0, 0, 1));
+	  		MV->translate(vec3(1, 0, 1));
+	  		MV->scale(vec3(.4, .03, .02));*/
+	  		MV->translate(vec3(1, .2, 1));
+			//rotate shoulder joint
+		    MV->rotate(sTheta, vec3(0, 0, 1));
+			//move to shoulder joint
+			MV->translate(vec3(.2, 0, 0));
+			//non-uniform scale
+		  	MV->scale(vec3(.6, 0.03, 0.02));
 	  		glUniformMatrix4fv(prog->getUniform("MV"), 1, GL_FALSE, value_ptr(MV->topMatrix()));
 	  		shape->draw(prog);
 		MV->popMatrix();
