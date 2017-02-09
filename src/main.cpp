@@ -26,6 +26,7 @@ GLFWwindow *window; // Main application window
 string RESOURCE_DIR = ""; // Where the resources are loaded from
 shared_ptr<Program> prog1; // Snowman program
 shared_ptr<Program> prog2; // Snow program
+shared_ptr<Program> prog3; // Globe Program
 shared_ptr<Shape> shape; 
 
 GLuint VertexArrayID;
@@ -137,9 +138,9 @@ static void init()
 
 	sTheta = 0;
 	snowTheta = 0;
-	flag = 0;
-	keyRotate = 0;
-	gTheta = 0;
+	flag = 0;		// Flag for shoulder rotation 
+	keyRotate = 0;	// Sets rotation angle increment value based on 'a' or 'd' being pressed
+	gTheta = 0;		// Global y-rotation value 
 
 	// Set background color.
 	glClearColor(.12f, .34f, .56f, 1.0f);
@@ -176,7 +177,14 @@ static void init()
 	prog2->addUniform("T");
 
 	// Initialize the GLSL program (GLOBE).
-	
+	prog3 = make_shared<Program>();
+	prog3->setVerbose(true);
+	prog3->setShaderNames(RESOURCE_DIR + "globe_vert.glsl", RESOURCE_DIR + "globe_frag.glsl");
+	prog3->init();
+	prog3->addUniform("P");
+	prog3->addUniform("MV");
+	prog3->addAttribute("vertPos");
+	prog3->addAttribute("vertNor");
 }
 
 static void render()
@@ -220,7 +228,7 @@ static void render()
 	  	// Left Arm
 	  	MV->pushMatrix();
 	  		MV->translate(vec3(-.9, 0, .8));
-	  		MV->scale(vec3(.4, .03, .02));
+	  		MV->scale(vec3(.5, .03, .02));
 	  		colorMode = 1; 
 	  		glUniformMatrix4fv(prog1->getUniform("MV"), 1, GL_FALSE, value_ptr(MV->topMatrix()));
 	  		glUniform1f(prog1->getUniform("colorMode"), colorMode);
@@ -307,6 +315,19 @@ static void render()
 
 		MV->popMatrix();
 	prog2->unbind();
+
+// PROGRAM 3 - GLOBE 
+	prog3->bind();
+		glUniformMatrix4fv(prog3->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
+		MV->pushMatrix();
+			MV->translate(vec3(0, 0, -5));
+			MV->rotate(gTheta, vec3(0, 1, 0));
+		  	MV->scale(vec3(3.5, 3, 3.5));
+		  	glUniformMatrix4fv(prog3->getUniform("MV"), 1, GL_FALSE, value_ptr(MV->topMatrix()));
+		  	shape->draw(prog3);
+		 MV->popMatrix();
+	prog3->unbind();
+
 
     // Pop matrix stacks.
     P->popMatrix();
