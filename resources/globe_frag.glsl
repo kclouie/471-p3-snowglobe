@@ -15,6 +15,6 @@ void main()
 		discard;
 	}
 	else {
-		color = vec4(0, 0, 0, 1);
+		color = vec4(Ncolor, 1.0);
 	}
 }

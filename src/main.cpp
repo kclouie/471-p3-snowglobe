@@ -219,11 +219,11 @@ static void render()
 	    // Center - Body
 		MV->translate(vec3(0, 0, -5.5));
 		MV->rotate(gTheta, vec3(0, 1, 0));
-	  	MV->scale(vec3(1, .9, 1));
+	  	/*MV->scale(vec3(1, .9, 1));
 	  	colorMode = 0;
 	  	glUniformMatrix4fv(prog1->getUniform("MV"), 1, GL_FALSE, value_ptr(MV->topMatrix()));
 	  	glUniform1f(prog1->getUniform("colorMode"), colorMode);
-	  	shape->draw(prog1);
+	  	shape->draw(prog1);*/
 
 	  	// Left Arm
 	  	MV->pushMatrix();
@@ -237,10 +237,10 @@ static void render()
 
 	  	// Right Arm
 	  	MV->pushMatrix();
-	  		MV->translate(vec3(.8, .2, .8));
+	  		MV->translate(vec3(.5, 0, .8));
 	  		MV->rotate(sTheta, vec3(0, 0, 1));
-	  		MV->translate(vec3(.2, 0, 0));
-	  		MV->scale(vec3(.6, .03, .02));
+	  		MV->translate(vec3(.5, 0, 0));
+	  		MV->scale(vec3(.5, .03, .02));
 	  		colorMode = 1;
 	  		glUniformMatrix4fv(prog1->getUniform("MV"), 1, GL_FALSE, value_ptr(MV->topMatrix()));
 	  		glUniform1f(prog1->getUniform("colorMode"), colorMode);
@@ -286,6 +286,11 @@ static void render()
 		  		shape->draw(prog1);
 		  	MV->popMatrix();
 	  	MV->popMatrix();
+	  	MV->scale(vec3(1, .9, 1));
+	  	colorMode = 0;
+	  	glUniformMatrix4fv(prog1->getUniform("MV"), 1, GL_FALSE, value_ptr(MV->topMatrix()));
+	  	glUniform1f(prog1->getUniform("colorMode"), colorMode);
+	  	shape->draw(prog1);
     MV->popMatrix();
 	prog1->unbind();
 
