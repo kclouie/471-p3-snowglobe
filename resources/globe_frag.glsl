@@ -15,6 +15,6 @@ void main()
 		discard;
 	}
 	else {
-		color = vec4(Ncolor, 1.0);
+		color = vec4(1, 1, 1, 1.0)*(1 - distance(normal.z, 0));
 	}
 }
